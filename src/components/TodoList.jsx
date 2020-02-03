@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 class TodoList extends Component {
   state = {
     input: "",
-    todos: []
+    todos: [
+
+    ]
   };
 
   handleSubmit = e => {
@@ -30,6 +32,26 @@ class TodoList extends Component {
     });
   };
 
+  handleDelete = (indexToDelete) => {
+
+    // METHOD 1
+    // copy todo list
+    const editedTodos = [...this.state.todos];
+    // splice the index of the clicked item
+    editedTodos.splice(indexToDelete, 1);
+
+    // METHOD 2
+    // make a copy of the todo list, but without the clicked item
+    // const editedTodos = this.state.todos.filter((item, index) => {
+    //   return indexToDelete !== index;
+    // });
+
+    // save the updated todo list to state
+    this.setState({
+      todos: editedTodos
+    });
+  };
+
   render() {
     return (
       <>
@@ -43,9 +65,19 @@ class TodoList extends Component {
         </form>
         <ul>
           {this.state.todos.map((item, index) => (
-            <li key={index}>{item.content}</li>
+            <li key={index}>{item.content}
+              <span className="delete-container">
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => {
+                    this.handleDelete(index);
+                  }}>X</button>
+              </span>
+            </li>
           ))}
         </ul>
+
       </>
     );
   }
